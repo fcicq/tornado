@@ -586,7 +586,10 @@ class BaseIOStream(object):
         # This method is called from _handle_read and _try_inline_read.
         try:
             if self._read_bytes is not None:
-                target_bytes = self._read_bytes
+                if self._read_partial:
+                    target_bytes = 0
+                else:
+                    target_bytes = self._read_bytes
             elif self._read_max_bytes is not None:
                 target_bytes = self._read_max_bytes
             elif self.reading():
